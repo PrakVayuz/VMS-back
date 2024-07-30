@@ -11,7 +11,7 @@ exports.adminLogin = async (req, res) => {
   try {
     const { username, password } = req.body;
     const { token, admin } = await adminService.login(username, password);
-    handleSuccess(res, { token, admin });
+    handleSuccess(res, { token, admin }, "Admin Login Successfully", 200);
   } catch (error) {
     handleError(res, error, 401);
   }

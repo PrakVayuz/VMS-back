@@ -2,8 +2,8 @@ const sendResponse = (res, data = null, message = null, statusCode = 200) => {
     res.status(statusCode).json({ data, message });
   };
   
-  const handleSuccess = (res, data, message) => {
-    sendResponse(res, data, message, 200);
+  const handleSuccess = (res, data, message,statusCode = 200) => {
+    sendResponse(res, data, message, statusCode);
   };
   
   const handleError = (res, error, statusCode = 400) => {

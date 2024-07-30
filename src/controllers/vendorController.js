@@ -1,3 +1,4 @@
+const { handleSuccess, handleError } = require('../middlewares/responseMiddleware');
 const vendorService = require('../services/vendorService');
 
 
@@ -10,9 +11,11 @@ exports.vendorLogin = async (req, res) => {
   try {
     const { username, password } = req.body;
     const { token, admin } = await vendorService.login(username, password);
-    res.json({ token, admin });
+    handleSuccess(res, { token, admin }, "Vendor Logged In");
+    //res.json({ token, admin });
   } catch (error) {
-    res.status(401).json({ message: error.message });
+    handleError(res,error,401);
+    //res.status(401).json({ message: error.message });
   }
 };
 /**
@@ -23,9 +26,11 @@ exports.vendorLogin = async (req, res) => {
 exports.createVendor = async (req, res) => {
   try {
     const vendor = await vendorService.createVendor(req.body);
-    res.status(201).json(vendor);
+   // res.status(201).json(vendor);
+    handleSuccess(res,vendor,"Vendor Created",201);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    handleError(res,error);
+    //res.status(400).json({ message: error.message });
   }
 };
 
@@ -37,9 +42,11 @@ exports.createVendor = async (req, res) => {
 exports.verifyVendor = async (req, res) => {
   try {
     const vendor = await vendorService.verifyVendor(req.params.id);
-    res.json(vendor);
+    handleSuccess(res,vendor,"Vendor Verified");
+    //res.json(vendor);
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    handleError(res,error,404);
+    //res.status(404).json({ message: error.message });
   }
 };
 
@@ -51,8 +58,10 @@ exports.verifyVendor = async (req, res) => {
 exports.deleteVendor = async (req, res) => {
   try {
     await vendorService.deleteVendor(req.params.id);
-    res.json({ message: 'Vendor deleted successfully' });
+    //res.json({ message: 'Vendor deleted successfully' });
+    handleSuccess(res,undefined,"Vendor deleted successfully");
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    handleError(res,error,404);
+    //res.status(404).json({ message: error.message });
   }
 };

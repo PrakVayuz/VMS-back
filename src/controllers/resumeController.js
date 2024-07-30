@@ -1,3 +1,4 @@
+const { handleSuccess, handleError } = require('../middlewares/responseMiddleware');
 const resumeService = require('../services/resumeService');
 
 /**
@@ -8,9 +9,11 @@ const resumeService = require('../services/resumeService');
 exports.updateResumeStatus = async (req, res) => {
   try {
     const updatedResume = await resumeService.updateResumeStatus(req.params.id, req.body.status);
-    res.json(updatedResume);
+    handleSuccess(res,updatedResume,"Resume updated");
+   // res.json(updatedResume);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    handleError(res,error);
+   // res.status(400).json({ message: error.message });
   }
 };
 
@@ -22,8 +25,10 @@ exports.updateResumeStatus = async (req, res) => {
 exports.getAllJobApplications = async (req, res) => {
   try {
     const applications = await resumeService.getAllJobApplications();
-    res.json(applications);
+    handleSuccess(res,applications);
+    //res.json(applications);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    handleError(res,error);
+    //res.status(400).json({ message: error.message });
   }
 };
