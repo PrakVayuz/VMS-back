@@ -1,4 +1,5 @@
 const adminService = require('../services/adminService');
+const vendorRepository = require('../repositories/vendorRepository');
 
 /**
  * Admin login
@@ -55,4 +56,16 @@ exports.verifyOtpAndUpdatePassword = async (req, res) => {
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
+};
+
+exports.verifyVendor= async (req,res) =>{
+    const { vendorId } = req.body;
+
+    try{
+        await vendorRepository.findById(vendorId);
+        res.json({message: "Vendor Verified Successfully"});
+    } catch(error){
+        res.status(400).json({message: error.message});
+    }
+
 };

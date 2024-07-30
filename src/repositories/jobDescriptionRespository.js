@@ -1,4 +1,5 @@
-const JobDescription = require('../models/JobDescription');
+const jobDescription = require("../models/jobDescription");
+
 
 /**
  * Find a job description by ID
@@ -12,7 +13,7 @@ exports.findById = (id) => JobDescription.findById(id);
  * @param {Object} jobDescriptionData - Job description data
  * @returns {Promise<JobDescription>}
  */
-exports.create = (jobDescriptionData) => new JobDescription(jobDescriptionData).save();
+exports.create = (jobDescriptionData) => new jobDescription(jobDescriptionData).save();
 
 /**
  * Update a job description by ID
