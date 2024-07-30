@@ -1,5 +1,6 @@
 const adminService = require('../services/adminService');
 const vendorRepository = require('../repositories/vendorRepository');
+const { handleSuccess, handleError } = require('../middlewares/responseMiddleware');
 
 /**
  * Admin login
@@ -10,9 +11,9 @@ exports.adminLogin = async (req, res) => {
   try {
     const { username, password } = req.body;
     const { token, admin } = await adminService.login(username, password);
-    res.json({ token, admin });
+    handleSuccess(res, { token, admin });
   } catch (error) {
-    res.status(401).json({ message: error.message });
+    handleError(res, error, 401);
   }
 };
 
@@ -24,9 +25,9 @@ exports.adminLogin = async (req, res) => {
 exports.getAdminProfile = async (req, res) => {
   try {
     const admin = await adminService.getProfile(req.params.id);
-    res.json(admin);
+    handleSuccess(res, admin);
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    handleError(res, error, 404);
   }
 };
 
@@ -38,9 +39,9 @@ exports.getAdminProfile = async (req, res) => {
 exports.updateAdminProfile = async (req, res) => {
   try {
     const updatedAdmin = await adminService.updateProfile(req.params.id, req.body);
-    res.json(updatedAdmin);
+    handleSuccess(res, updatedAdmin);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    handleError(res, error, 400);
   }
 };
 
@@ -52,20 +53,24 @@ exports.updateAdminProfile = async (req, res) => {
 exports.verifyOtpAndUpdatePassword = async (req, res) => {
   try {
     await adminService.verifyOtpAndUpdatePassword(req.body.email, req.body.otp, req.body.newPassword);
-    res.json({ message: 'Password updated successfully' });
+    handleSuccess(res, null, 'Password updated successfully');
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    handleError(res, error, 400);
   }
 };
 
-exports.verifyVendor= async (req,res) =>{
-    const { vendorId } = req.body;
+/**
+ * Verify vendor
+ * @param {Request} req - HTTP request
+ * @param {Response} res - HTTP response
+ */
+exports.verifyVendor = async (req, res) => {
+  const { vendorId } = req.body;
 
-    try{
-        await vendorRepository.findById(vendorId);
-        res.json({message: "Vendor Verified Successfully"});
-    } catch(error){
-        res.status(400).json({message: error.message});
-    }
-
+  try {
+    await vendorRepository.findById(vendorId);
+    handleSuccess(res, null, 'Vendor Verified Successfully');
+  } catch (error) {
+    handleError(res, error, 400);
+  }
 };
